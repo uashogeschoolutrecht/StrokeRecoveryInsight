@@ -3,7 +3,7 @@
 Example on how to run and develop a [streamlit](https://github.com/streamlit/streamlit) application inside docker.
 
 <p align="center">
-<img src="/img/screenshot.png" alt="streamlit in docker">
+<img src="./img/screenshot.png" alt="streamlit in docker">
 </p>
 
 ## Installation
