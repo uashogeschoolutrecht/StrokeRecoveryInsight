@@ -1,11 +1,22 @@
 version: '3.7'
 
 services:
-    app:
-        build: ./
-        command: streamlit run app/Home.py --server.port 8501
+    app-vae:
+        build: ./VAE
+        command: streamlit run VAE/app/Home.py --server.port 8501
         volumes:
             - ./:/usr/src/app
         ports:
             - 8501:8501
         image: yourstreamlitapp:latest
+    
+    app-balance:
+        build: ./balance
+        command: streamlit run balance/app/Home.py --server.port 8502
+        volumes:
+            - ./:/usr/src/app
+        ports:
+            - 8502:8502
+        image: yourstreamlitapp:latest
+
+        
