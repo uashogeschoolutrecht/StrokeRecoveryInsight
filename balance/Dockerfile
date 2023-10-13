@@ -6,6 +6,8 @@ WORKDIR /usr/src/app
 # dont buffer to stdout/stderr
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
+ENV PYTHONPATH=/usr/src/app
+
 
 COPY ./requirements.txt /usr/src/app/requirements.txt
 
