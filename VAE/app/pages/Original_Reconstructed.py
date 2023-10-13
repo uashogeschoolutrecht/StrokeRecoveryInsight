@@ -11,14 +11,14 @@ import streamlit as st
 # Load models and set cache to prevent reloading
 @st.cache_resource
 def load_models():
-    encoder = tf.keras.models.load_model('app/VAE_512_encoder', compile=False)
-    decoder = tf.keras.models.load_model('app/VAE_512_decoder', compile=False)
+    encoder = tf.keras.models.load_model('VAE/app/VAE_512_encoder', compile=False)
+    decoder = tf.keras.models.load_model('VAE/app/VAE_512_decoder', compile=False)
     return encoder, decoder
 
 # Load data and set cache to prevent reloading
 @st.cache_resource
 def load_data():
-    data_np = np.load('app/512.npy', allow_pickle=True)
+    data_np = np.load('VAE/app/512.npy', allow_pickle=True)
     return data_np
 
 # Reconstruct data

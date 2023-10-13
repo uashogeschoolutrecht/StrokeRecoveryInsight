@@ -12,11 +12,18 @@ services:
     
     app-balance:
         build: ./balance
-        command: streamlit run balance/app/Home.py --server.port 8502
+        command: streamlit run balance/app/Home.py --server.port 8501
         volumes:
             - ./:/usr/src/app
         ports:
-            - 8502:8502
+            - 8502:8501
         image: yourstreamlitapp:latest
 
-        
+    app-gait:
+        build: ./gait
+        command: streamlit run gait/app/Home.py --server.port 8501
+        volumes:
+            - ./:/usr/src/app
+        ports:
+            - 8503:8501
+        image: yourstreamlitapp:latest
