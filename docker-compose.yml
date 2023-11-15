@@ -1,29 +1,70 @@
 version: '3.7'
 
 services:
+
+    reverse-proxy:
+        image: traefik:v2.5
+        command:
+            - "--api.dashboard=true" 
+            - "--api.insecure=true"
+            - "--providers.docker"
+            - "--entrypoints.web.address=:8081"
+        ports:
+            - "8081:8081" # http
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock # So that Traefik can listen to the Docker events
+        labels:
+            - "traefik.http.routers.api.rule=PathPrefix(`/api`)"
+            - "traefik.http.routers.api.service=api@internal"
+            - "traefik.http.routers.dashboard.rule=PathPrefix(`/dashboard`)"
+            - "traefik.http.routers.dashboard.service=api@internal"
+            - "traefik.http.routers.dashboard.middlewares=dashboard-stripprefix"
+            - "traefik.http.middlewares.dashboard-stripprefix.stripprefix.prefixes=/dashboard"
+
+    landing-page:
+        image: nginx:latest # use the official nginx image
+        volumes:
+            - ./landing-page:/usr/share/nginx/html:ro # make sure the path points to the directory containing your index.html
+        labels:
+            - "traefik.http.routers.landing-page.rule=PathPrefix(`/`)" # ensure this is the first route to catch
+            - "traefik.http.routers.landing-page.entrypoints=web"
+            - "traefik.http.routers.landing-page.priority=1"
+
     app-vae:
+        labels:
+            - "traefik.http.routers.app-vae.rule=PathPrefix(`/app-vae`)"
+            - "traefik.http.routers.app-vae.entrypoints=web"
+            - "traefik.http.services.app-vae.loadbalancer.server.port=8501"
+            - "traefik.http.middlewares.app-vae-stripprefix.stripprefix.prefixes=/app-vae"
+            - "traefik.http.routers.app-vae.middlewares=app-vae-stripprefix"
         build: ./VAE
         command: streamlit run VAE/app/Home.py --server.port 8501
         volumes:
             - ./:/usr/src/app
-        ports:
-            - 8501:8501
         image: yourstreamlitapp:latest
     
     app-balance:
+        labels:
+            - "traefik.http.routers.app-balance.rule=PathPrefix(`/app-balance`)"
+            - "traefik.http.routers.app-balance.entrypoints=web"
+            - "traefik.http.services.app-balance.loadbalancer.server.port=8501"
+            - "traefik.http.middlewares.app-balance-stripprefix.stripprefix.prefixes=/app-balance"
+            - "traefik.http.routers.app-balance.middlewares=app-balance-stripprefix"
         build: ./balance
         command: streamlit run balance/app/Home.py --server.port 8501
         volumes:
             - ./:/usr/src/app
-        ports:
-            - 8502:8501
         image: yourstreamlitapp:latest
 
     app-gait:
+        labels:
+            - "traefik.http.routers.app-gait.rule=PathPrefix(`/app-gait`)"
+            - "traefik.http.routers.app-gait.entrypoints=web"
+            - "traefik.http.services.app-gait.loadbalancer.server.port=8501"
+            - "traefik.http.middlewares.app-gait-stripprefix.stripprefix.prefixes=/app-gait"
+            - "traefik.http.routers.app-gait.middlewares=app-gait-stripprefix"
         build: ./gait
         command: streamlit run gait/app/Home.py --server.port 8501
         volumes:
             - ./:/usr/src/app
-        ports:
-            - 8503:8501
         image: yourstreamlitapp:latest
