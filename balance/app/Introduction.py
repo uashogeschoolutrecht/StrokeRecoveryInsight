@@ -1,7 +1,13 @@
 import streamlit as st
 
-# Page title
-st.title("Balance Assessment")
+def add_home_button():
+    # Use local CSS to style the button if needed
+   st.sidebar.markdown(f'<a href="https://strokerecovery.makingsenseofse.src.surf-hosted.nl/" target="_self"><button class="btn-primary">Back to the homepage</button></a>', unsafe_allow_html=True)
+
+    # ... add other sidebar elements here ...
+
+# Add the home button first
+add_home_button()
 
 # Introduction
 st.header("Introduction")
@@ -9,7 +15,8 @@ st.markdown("""
 Balance is often affected after stroke, severely impacting activities of daily life. Conventional testing methods to assess balance provide limited information, as they are subjected to floor and ceiling effects. Instrumented tests, for instance using inertial measurement units, offer a feasible and promising alternative.
 """)
 
-
+# Page title
+st.title("Balance Assessment")
 st.markdown("""
 
 ## References

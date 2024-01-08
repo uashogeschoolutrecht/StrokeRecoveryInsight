@@ -1,5 +1,14 @@
 import streamlit as st
 
+def add_home_button():
+    # Use local CSS to style the button if needed
+   st.sidebar.markdown(f'<a href="https://strokerecovery.makingsenseofse.src.surf-hosted.nl/" target="_self"><button class="btn-primary">Back to the homepage</button></a>', unsafe_allow_html=True)
+
+    # ... add other sidebar elements here ...
+
+# Add the home button first
+add_home_button()
+
 # Page title
 st.title("Gait Assessment")
 
