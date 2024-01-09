@@ -251,9 +251,6 @@ def main():
                                         printje = True, 
                                         plotje = False)
 
-        '''
-        Distance between feet should not exceed 10m. 
-        '''
         if (np.abs(leftFoot.totdist -rightFoot.totdist) > 25):
             print('Difference between distance too large. We cannot include',
                     'this participant')
@@ -262,13 +259,6 @@ def main():
         print('\n', 'checkpoint 3 passed','\n')
         
         
-        '''
-        Returns: Dominant frequenty, width, slope, amplitude, density, stride and 
-        step frequency, Harmonic ratio and harmonic index 
-        
-        IMPORTANT:
-        - Calculate the mediolateral first to determine the correct HZ settings for AP and VT 
-        '''
         
         # FFT ML
         print('Low Back: ' , '\n')
@@ -301,10 +291,7 @@ def main():
                                     hzMin = lowBack.fftsignalML.hzMin,
                                     printje = False)
                                 
-        '''
-        Stepdetection of the right and leftfoot.
-        Returns: Array of peaks VT, Mean/STD stride time
-        '''
+
         
         Stepdetect.stepdetection_lowback_HC(lowBack, 
                                             leftFoot, 
@@ -313,9 +300,7 @@ def main():
                                             plotje = False, 
                                             printje = False)
         ############################### Checkpoint 4 ################################
-        '''
-        the difference between peaks found in feet in low back should be < 10.
-        '''
+
         
         if (np.abs(len(lowBack.peaks) - (leftFoot.stridenum + rightFoot.stridenum)) > 10):
             print('We cannot find the same amount of peaks in LB as in feet sensors.',
@@ -324,9 +309,7 @@ def main():
             
         print('\n', 'checkpoint 4 passed','\n')
         
-        '''
-        Returns: Autocorrelation and autocovariance
-        '''
+
         
         
         commonFunctions.autocovariance(leftFoot, sig = 'gacc', plotje = False)  
@@ -335,10 +318,6 @@ def main():
         commonFunctions.autocorrelation(rightFoot, sig = 'gacc',plotje = False)  
         commonFunctions.autocovariance(lowBack, sig = 'acc',plotje = False)  
         commonFunctions.autocorrelation(lowBack, sig = 'acc', plotje = False)  
-        
-        '''
-        Returns: range, std, rms
-        '''
         
         commonFunctions.desciptives_acc(leftFoot, 
                                         leftFoot.globalacceleration,
@@ -376,11 +355,7 @@ def main():
                                         steps,
                                         firststride = 10
                                         )
-        '''
-        First the signal is resampled to 50 strides and 100 steps before doing
-        lyapunov. 
-        Returns: Short term local divergence exponent
-        '''
+
         
         lowBack.lde = Lyapunovmean(lowBack,
                                                 lowBack.peaks,
@@ -444,38 +419,389 @@ def main():
                         )  
 
         data = {
-            "Parameter": [
-                "Left Foot Stride Time Mean",
-                "Left Foot Stride Time STD",
-                # ... (repeat for all left foot parameters)
-                "Right Foot Stride Time Mean",
-                "Right Foot Stride Time STD",
-                # ... (repeat for all right foot parameters)
-                "Low Back Stride Time Mean",
-                "Low Back Stride Time STD",
-                # ... (repeat for all low back parameters)
-                # Include all other parameters here...
-            ],
-            "Value": [
-                leftFoot.stridetimemean,
-                leftFoot.stridetimeSTD,
-                # ... (repeat for all left foot values)
-                rightFoot.stridetimemean,
-                rightFoot.stridetimeSTD,
-                # ... (repeat for all right foot values)
-                lowBack.stridetimemean,
-                lowBack.stridetimeSTD,
-                # ... (repeat for all low back values)
-                # Include all other values here...
+            "parameter": [
+            "leftFoot.stridetimemean", 
+            "leftFoot.stridetimeSTD",   
+            "leftFoot.normstridetime",   
+            "leftFoot.meanStrideDistperstep",   
+            "leftFoot.stdStrideDistperstep",   
+            "leftFoot.kmph",   
+            "leftFoot.meanstrideVelperstepperstep",   
+            "leftFoot.stdstrideVelperstepperstep",   
+            "leftFoot.accrangeX",   
+            "leftFoot.accstdX",   
+            "leftFoot.accrmsX",   
+            "leftFoot.accrangeY",   
+            "leftFoot.accstdY",   
+            "leftFoot.accrmsY",   
+            "leftFoot.accrangeZ",   
+            "leftFoot.accstdZ",   
+            "leftFoot.accrmsZ",   
+            "leftFoot.gyrrangeX",   
+            "leftFoot.gyrstdX",   
+            "leftFoot.gyrrmsX",   
+            "leftFoot.gyrstdY",   
+            "leftFoot.gyrstdY",   
+            "leftFoot.gyrrmsY",   
+            "leftFoot.gyrrangeZ",   
+            "leftFoot.gyrstdZ",   
+            "leftFoot.gyrrmsZ",   
+            "leftFoot.autocovx_acc",   
+            "leftFoot.autocovy_acc",   
+            "leftFoot.autocovz_acc",   
+            "leftFoot.autocovy_gyr",   
+            "leftFoot.autocovy_gyr",   
+            "leftFoot.autocovz_gyr",   
+            "leftFoot.autocorx_acc",   
+            "leftFoot.autocory_acc",   
+            "leftFoot.autocorz_acc",   
+            "leftFoot.autocory_gyr",   
+            "leftFoot.autocory_gyr",   
+            "leftFoot.autocorz_gyr",   
+            "leftFoot.lde[0]",   
+            "leftFoot.lde[1]",    
+            "leftFoot.lde[2]",    
+            "leftFoot.fftFoot.dominantpeak",   
+            "leftFoot.fftFoot.width",   
+            "leftFoot.fftFoot.slope",   
+            "leftFoot.fftFoot.SDP",   
+            "leftFoot.cadence",   
+            "leftFoot.approxentropy_accX",                                                              
+            "leftFoot.approxentropy_accY",    
+            "leftFoot.approxentropy_accZ",    
+            "leftFoot.sampleEntropy_accX",                                  
+            "leftFoot.sampleEntropy_accY",    
+            "leftFoot.sampleEntropy_accZ",   
+            "rightFoot.stridetimemean",   
+            "rightFoot.stridetimeSTD",   
+            "rightFoot.normstridetime",   
+            "rightFoot.meanStrideDistperstep",   
+            "rightFoot.stdStrideDistperstep",   
+            "rightFoot.kmph",   
+            "rightFoot.meanstrideVelperstepperstep",   
+            "rightFoot.stdstrideVelperstepperstep",   
+            "rightFoot.accrangeX",   
+            "rightFoot.accstdX",   
+            "rightFoot.accrmsX",   
+            "rightFoot.accrangeY",   
+            "rightFoot.accstdY",   
+            "rightFoot.accrmsY",   
+            "rightFoot.accrangeZ",   
+            "rightFoot.accstdZ",   
+            "rightFoot.accrmsZ",   
+            "rightFoot.gyrrangeX",   
+            "rightFoot.gyrstdX",   
+            "rightFoot.gyrrmsX",   
+            "rightFoot.gyrstdY",   
+            "rightFoot.gyrstdY",   
+            "rightFoot.gyrrmsY",   
+            "rightFoot.gyrrangeZ",   
+            "rightFoot.gyrstdZ",   
+            "rightFoot.gyrrmsZ",   
+            "rightFoot.autocovx_acc",   
+            "rightFoot.autocovy_acc",   
+            "rightFoot.autocovz_acc",   
+            "rightFoot.autocovy_gyr",   
+            "rightFoot.autocovy_gyr",   
+            "rightFoot.autocovz_gyr",   
+            "rightFoot.autocorx_acc",   
+            "rightFoot.autocory_acc",   
+            "rightFoot.autocorz_acc",   
+            "rightFoot.autocory_gyr",   
+            "rightFoot.autocory_gyr",   
+            "rightFoot.autocorz_gyr",   
+            "rightFoot.lde[0]",   
+            "rightFoot.lde[1]",    
+            "rightFoot.lde[2]", 
+            "rightFoot.fftFoot.dominantpeak",   
+            "rightFoot.fftFoot.width",   
+            "rightFoot.fftFoot.slope",   
+            "rightFoot.fftFoot.SDP",   
+            "rightFoot.cadence",   
+            "rightFoot.approxentropy_accX",                                                              
+            "rightFoot.approxentropy_accY",    
+            "rightFoot.approxentropy_accZ",    
+            "rightFoot.sampleEntropy_accX",                                  
+            "rightFoot.sampleEntropy_accY",    
+            "rightFoot.sampleEntropy_accZ",   
+            "lowBack.stridetimemean",   
+            "lowBack.stridetimeSTD",   
+            "lowBack.normstridetime",   
+            "lowBack.fftsignalAP.width",   
+            "lowBack.fftsignalAP.slope",   
+            "lowBack.fftsignalAP.SDP",   
+            "lowBack.fftsignalAP.harmonicratio",   
+            "lowBack.fftsignalAP.harmonicindex",   
+            "lowBack.fftsignalAP.dominantpeak",   
+            "lowBack.fftsignalML.width",   
+            "lowBack.fftsignalML.slope",   
+            "lowBack.fftsignalML.SDP",   
+            "lowBack.fftsignalML.harmonicratio",   
+            "lowBack.fftsignalML.harmonicindex",   
+            "lowBack.fftsignalML.dominantpeak",   
+            "lowBack.fftsignalVT.width",   
+            "lowBack.fftsignalVT.slope",   
+            "lowBack.fftsignalVT.SDP",   
+            "lowBack.fftsignalVT.harmonicratio",   
+            "lowBack.fftsignalVT.harmonicindex",   
+            "lowBack.fftsignalVT.dominantpeak",   
+            "lowBack.accrangeX",   
+            "lowBack.accstdX",   
+            "lowBack.accrmsX",   
+            "lowBack.accrangeY",   
+            "lowBack.accstdY",   
+            "lowBack.accrmsY",   
+            "lowBack.accrangeZ",   
+            "lowBack.accstdZ",   
+            "lowBack.accrmsZ",   
+            "lowBack.gyrrangeX",   
+            "lowBack.gyrstdX",   
+            "lowBack.gyrrmsX",   
+            "lowBack.gyrstdY",   
+            "lowBack.gyrstdY",   
+            "lowBack.gyrrmsY",   
+            "lowBack.gyrrangeZ",   
+            "lowBack.gyrstdZ",   
+            "lowBack.gyrrmsZ",   
+            "lowBack.autocovx_acc",   
+            "lowBack.autocovy_acc",   
+            "lowBack.autocovz_acc",   
+            "lowBack.autocovy_gyr",   
+            "lowBack.autocovy_gyr",   
+            "lowBack.autocovz_gyr",   
+            "lowBack.autocorx_acc",   
+            "lowBack.autocory_acc",   
+            "lowBack.autocorz_acc",   
+            "lowBack.autocory_gyr",   
+            "lowBack.autocory_gyr",   
+            "lowBack.autocorz_gyr",   
+            "lowBack.lde[0]",    
+            "lowBack.lde[1]",    
+            "lowBack.lde[2]",    
+            "lowBack.approxentropy_accX",                                                              
+            "lowBack.approxentropy_accY",    
+            "lowBack.approxentropy_accZ",    
+            "lowBack.sampleEntropy_accX",                                  
+            "lowBack.sampleEntropy_accY",    
+            "lowBack.sampleEntropy_accZ",   
+            "asymmetryResults.SRswing_stance",   
+            "asymmetryResults.SRstandphase",   
+            "asymmetryResults.SRswingphase",   
+            "asymmetryResults.SIswing_stancePar",         
+            "asymmetryResults.SIstandphase",                             
+            "asymmetryResults.SIswingphase",                 
+            "asymmetryResults.GAswing_stancePar",         
+            "asymmetryResults.GAstandphase",                         
+            "asymmetryResults.GAswingphase",   
+            "asymmetryResults.SAswing_stancePar",                 
+            "asymmetryResults.SAstandphase",                         
+            "asymmetryResults.SAswingphase",         
+            "asymmetryResults.stepPeakDiffSTD",   
+            "asymmetryResults.lowBackPeakDiffValues",   
+            "asymmetryResults.Amplitudeasym",   
+            "asymmetryResults.AmplitudeSTDasym",   
+            "asymmetryResults.normDistance",   
+            "asymmetryResults.normCadence",   
+            "asymmetryResults.normDistancePStride",   
+            "asymmetryResults.normTimePerStep",
+            ],            
+            
+            "value": [
+            leftFoot.stridetimemean, 
+            leftFoot.stridetimeSTD,   
+            leftFoot.normstridetime,   
+            leftFoot.meanStrideDistperstep,   
+            leftFoot.stdStrideDistperstep,   
+            leftFoot.kmph,   
+            leftFoot.meanstrideVelperstepperstep,   
+            leftFoot.stdstrideVelperstepperstep,   
+            leftFoot.accrangeX,   
+            leftFoot.accstdX,   
+            leftFoot.accrmsX,   
+            leftFoot.accrangeY,   
+            leftFoot.accstdY,   
+            leftFoot.accrmsY,   
+            leftFoot.accrangeZ,   
+            leftFoot.accstdZ,   
+            leftFoot.accrmsZ,   
+            leftFoot.gyrrangeX,   
+            leftFoot.gyrstdX,   
+            leftFoot.gyrrmsX,   
+            leftFoot.gyrstdY,   
+            leftFoot.gyrstdY,   
+            leftFoot.gyrrmsY,   
+            leftFoot.gyrrangeZ,   
+            leftFoot.gyrstdZ,   
+            leftFoot.gyrrmsZ,   
+            leftFoot.autocovx_acc,   
+            leftFoot.autocovy_acc,   
+            leftFoot.autocovz_acc,   
+            leftFoot.autocovy_gyr,   
+            leftFoot.autocovy_gyr,   
+            leftFoot.autocovz_gyr,   
+            leftFoot.autocorx_acc,   
+            leftFoot.autocory_acc,   
+            leftFoot.autocorz_acc,   
+            leftFoot.autocory_gyr,   
+            leftFoot.autocory_gyr,   
+            leftFoot.autocorz_gyr,   
+            leftFoot.lde[0],   
+            leftFoot.lde[1],    
+            leftFoot.lde[2],    
+            leftFoot.fftFoot.dominantpeak,   
+            leftFoot.fftFoot.width,   
+            leftFoot.fftFoot.slope,   
+            leftFoot.fftFoot.SDP,   
+            leftFoot.cadence,   
+            leftFoot.approxentropy_accX,                                                              
+            leftFoot.approxentropy_accY,    
+            leftFoot.approxentropy_accZ,    
+            leftFoot.sampleEntropy_accX,                                  
+            leftFoot.sampleEntropy_accY,    
+            leftFoot.sampleEntropy_accZ,   
+            rightFoot.stridetimemean,   
+            rightFoot.stridetimeSTD,   
+            rightFoot.normstridetime,   
+            rightFoot.meanStrideDistperstep,   
+            rightFoot.stdStrideDistperstep,   
+            rightFoot.kmph,   
+            rightFoot.meanstrideVelperstepperstep,   
+            rightFoot.stdstrideVelperstepperstep,   
+            rightFoot.accrangeX,   
+            rightFoot.accstdX,   
+            rightFoot.accrmsX,   
+            rightFoot.accrangeY,   
+            rightFoot.accstdY,   
+            rightFoot.accrmsY,   
+            rightFoot.accrangeZ,   
+            rightFoot.accstdZ,   
+            rightFoot.accrmsZ,   
+            rightFoot.gyrrangeX,   
+            rightFoot.gyrstdX,   
+            rightFoot.gyrrmsX,   
+            rightFoot.gyrstdY,   
+            rightFoot.gyrstdY,   
+            rightFoot.gyrrmsY,   
+            rightFoot.gyrrangeZ,   
+            rightFoot.gyrstdZ,   
+            rightFoot.gyrrmsZ,   
+            rightFoot.autocovx_acc,   
+            rightFoot.autocovy_acc,   
+            rightFoot.autocovz_acc,   
+            rightFoot.autocovy_gyr,   
+            rightFoot.autocovy_gyr,   
+            rightFoot.autocovz_gyr,   
+            rightFoot.autocorx_acc,   
+            rightFoot.autocory_acc,   
+            rightFoot.autocorz_acc,   
+            rightFoot.autocory_gyr,   
+            rightFoot.autocory_gyr,   
+            rightFoot.autocorz_gyr,   
+            rightFoot.lde[0],   
+            rightFoot.lde[1],    
+            rightFoot.lde[2], 
+            rightFoot.fftFoot.dominantpeak,   
+            rightFoot.fftFoot.width,   
+            rightFoot.fftFoot.slope,   
+            rightFoot.fftFoot.SDP,   
+            rightFoot.cadence,   
+            rightFoot.approxentropy_accX,                                                              
+            rightFoot.approxentropy_accY,    
+            rightFoot.approxentropy_accZ,    
+            rightFoot.sampleEntropy_accX,                                  
+            rightFoot.sampleEntropy_accY,    
+            rightFoot.sampleEntropy_accZ,   
+            lowBack.stridetimemean,   
+            lowBack.stridetimeSTD,   
+            lowBack.normstridetime,   
+            lowBack.fftsignalAP.width,   
+            lowBack.fftsignalAP.slope,   
+            lowBack.fftsignalAP.SDP,   
+            lowBack.fftsignalAP.harmonicratio,   
+            lowBack.fftsignalAP.harmonicindex,   
+            lowBack.fftsignalAP.dominantpeak,   
+            lowBack.fftsignalML.width,   
+            lowBack.fftsignalML.slope,   
+            lowBack.fftsignalML.SDP,   
+            lowBack.fftsignalML.harmonicratio,   
+            lowBack.fftsignalML.harmonicindex,   
+            lowBack.fftsignalML.dominantpeak,   
+            lowBack.fftsignalVT.width,   
+            lowBack.fftsignalVT.slope,   
+            lowBack.fftsignalVT.SDP,   
+            lowBack.fftsignalVT.harmonicratio,   
+            lowBack.fftsignalVT.harmonicindex,   
+            lowBack.fftsignalVT.dominantpeak,   
+            lowBack.accrangeX,   
+            lowBack.accstdX,   
+            lowBack.accrmsX,   
+            lowBack.accrangeY,   
+            lowBack.accstdY,   
+            lowBack.accrmsY,   
+            lowBack.accrangeZ,   
+            lowBack.accstdZ,   
+            lowBack.accrmsZ,   
+            lowBack.gyrrangeX,   
+            lowBack.gyrstdX,   
+            lowBack.gyrrmsX,   
+            lowBack.gyrstdY,   
+            lowBack.gyrstdY,   
+            lowBack.gyrrmsY,   
+            lowBack.gyrrangeZ,   
+            lowBack.gyrstdZ,   
+            lowBack.gyrrmsZ,   
+            lowBack.autocovx_acc,   
+            lowBack.autocovy_acc,   
+            lowBack.autocovz_acc,   
+            lowBack.autocovy_gyr,   
+            lowBack.autocovy_gyr,   
+            lowBack.autocovz_gyr,   
+            lowBack.autocorx_acc,   
+            lowBack.autocory_acc,   
+            lowBack.autocorz_acc,   
+            lowBack.autocory_gyr,   
+            lowBack.autocory_gyr,   
+            lowBack.autocorz_gyr,   
+            lowBack.lde[0],    
+            lowBack.lde[1],    
+            lowBack.lde[2],    
+            lowBack.approxentropy_accX,                                                              
+            lowBack.approxentropy_accY,    
+            lowBack.approxentropy_accZ,    
+            lowBack.sampleEntropy_accX,                                  
+            lowBack.sampleEntropy_accY,    
+            lowBack.sampleEntropy_accZ,   
+            asymmetryResults.SRswing_stance,   
+            asymmetryResults.SRstandphase,   
+            asymmetryResults.SRswingphase,   
+            asymmetryResults.SIswing_stancePar,         
+            asymmetryResults.SIstandphase,                             
+            asymmetryResults.SIswingphase,                 
+            asymmetryResults.GAswing_stancePar,         
+            asymmetryResults.GAstandphase,                         
+            asymmetryResults.GAswingphase,   
+            asymmetryResults.SAswing_stancePar,                 
+            asymmetryResults.SAstandphase,                         
+            asymmetryResults.SAswingphase,         
+            asymmetryResults.stepPeakDiffSTD,   
+            asymmetryResults.lowBackPeakDiffValues,   
+            asymmetryResults.Amplitudeasym,   
+            asymmetryResults.AmplitudeSTDasym,   
+            asymmetryResults.normDistance,   
+            asymmetryResults.normCadence,   
+            asymmetryResults.normDistancePStride,   
+            asymmetryResults.normTimePerStep,  
             ]
-        }
+            }
+
+
         # Convert the dictionary to a DataFrame
         df = pd.DataFrame(data)
 
         # Display the DataFrame as a table in Streamlit
         st.dataframe(df)
 
-        st.success("All files have been uploaded and processed.")
+        st.success("All files have been processed.")
     else:
         st.warning("Please upload all required files to continue.")
 
@@ -497,3 +823,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+    
